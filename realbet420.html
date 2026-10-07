@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sports Arena</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1220;
+  color: white;
+}
+header {
+  background: #101d33;
+  padding: 20px;
+  text-align: center;
+}
+.balance {
+  background: #163c32;
+  margin: 15px;
+  padding: 18px;
+  border-radius: 12px;
+  text-align: center;
+}
+.match {
+  background: #19263b;
+  margin: 15px;
+  padding: 18px;
+  border-radius: 12px;
+  text-align: center;
+}
+button {
+  background: #19a974;
+  color: white;
+  border: 0;
+  border-radius: 7px;
+  padding: 12px;
+  margin: 4px;
+  cursor: pointer;
+}
+#history {
+  padding: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>⚽ SPORTS ARENA</h1>
+  <p>Free Sports Predictions</p>
+</header>
+
+<div class="balance">
+  <h3>🪙 Virtual Points</h3>
+  <h2 id="points">1000</h2>
+</div>
+
+<div id="matches"></div>
+
+<div class="match">
+  <h3>📋 Prediction History</h3>
+  <div id="history">এখনো কোনো prediction নেই।</div>
+</div>
+
+<script>
+let points = 1000;
+let history = [];
+
+const matches = [
+  {home: "Barcelona", away: "Real Madrid"},
+  {home: "Liverpool", away: "Arsenal"},
+  {home: "Brazil", away: "Argentina"}
+];
+
+function renderMatches() {
+  const container = document.getElementById("matches");
+
+  container.innerHTML = matches.map((m, i) => `
+    <div class="match">
+      <h3>${m.home} vs ${m.away}</h3>
+      <button onclick="predict(${i}, 'Home')">
+        ${m.home}
+      </button>
+      <button onclick="predict(${i}, 'Draw')">
+        Draw
+      </button>
+      <button onclick="predict(${i}, 'Away')">
+        ${m.away}
+      </button>
+    </div>
+  `).join("");
+}
+
+function predict(index, choice) {
+  if (points < 100) {
+    alert("পর্যাপ্ত virtual points নেই!");
+    return;
+  }
+
+  points -= 100;
+  document.getElementById("points").textContent = points;
+
+  const m = matches[index];
+  const team = choice === "Home" ? m.home :
+               choice === "Away" ? m.away : "Draw";
+
+  history.unshift(m.home + " vs " + m.away + " — " + team);
+
+  document.getElementById("history").innerHTML =
+    history.map(item => "<p>" + item + "</p>").join("");
+}
+
+renderMatches();
+</script>
+
+</body>
+</html>
